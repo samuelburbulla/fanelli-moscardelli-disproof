@@ -1,0 +1,18 @@
+{
+  "challenge_module": "Challenge",
+  "solution_module": "Solution",
+  "theorem_names": [
+    "FanelliMoscardelli.exists_m_stable_of_odd",
+    "FanelliMoscardelli.stabilityThreshold_odd_le",
+    "FanelliMoscardelli.not_stability_threshold_tight",
+    "FanelliMoscardelli.stabilityThreshold_mono",
+    "FanelliMoscardelli.stabilityThreshold_five",
+    "FanelliMoscardelli.stabilityThreshold_six",
+    "FanelliMoscardelli.stabilityThreshold_seven"
+  ],
+  "permitted_axioms": [
+    "propext",
+    "Quot.sound",
+    "Classical.choice"
+  ]
+}

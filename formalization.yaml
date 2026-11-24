@@ -1,0 +1,159 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/mathlib-initiative/formalization.yaml/main/schema/formalization.schema.json
+version: "v0.4"
+
+project:
+  name: "Disproof of the Fanelli-Moscardelli Conjecture on Approximate Roommates Stability"
+  description: >-
+    Self-contained, pure-kernel Lean 4 disproof of the open Fanelli-Moscardelli
+    conjecture (ECAI 2025; formalized in google-deepmind/formal-conjectures as
+    FormalConjectures/Paper/ApproximatelyStableMatching.lean) asserting that the
+    universal rank-improvement stability threshold K(N) for complete strict
+    roommates profiles on N agents equals ceil(N / 2) for all sufficiently large
+    N. We constructively prove that for every integer m >= 3 and every complete
+    strict preference profile on N = 2m + 1 agents there exists an m-stable
+    matching (exists_m_stable_of_odd), yielding K(2m + 1) <= m < m + 1 =
+    ceil((2m + 1) / 2) (stabilityThreshold_odd_le) and refuting the conjecture
+    (not_stability_threshold_tight). We also prove monotonicity K(n) <= K(n + 1)
+    via pariah lifting (stabilityThreshold_mono) and exhibit an explicit 5-agent
+    profile with no 2-stable matching, establishing the exact small values
+    K(5) = K(6) = K(7) = 3 (so N = 7 is the smallest odd counterexample). The
+    even-N case K(2m) = m remains open.
+  authors:
+    - "Samuel Burbulla"
+  license: "Apache-2.0"
+  responsible_maintainers:
+    - "Samuel Burbulla"
+
+classification:
+  arxiv: ["cs.GT", "math.CO"]
+  msc2020: ["91B68", "05C70", "91A12"]
+
+sources:
+  - title: "Constructive upper bound K(2m + 1) <= m and disproof of the Fanelli-Moscardelli tightness conjecture"
+    type: "original-proof"
+    relationship: "other"
+    note: >-
+      First presentation and proof of K(2m + 1) <= m for all m >= 3,
+      K(5) = K(6) = K(7) = 3, and the resulting disproof of the eventual
+      tightness conjecture K(N) = ceil(N / 2) for all sufficiently large N.
+  - title: "Approximately Stable Matching"
+    authors:
+      - "Angelo Fanelli"
+      - "Luca Moscardelli"
+    id: "https://doi.org/10.3233/FAIA251234"
+    type: "paper"
+    location: "https://hal.science/hal-05368668"
+    relationship: "background"
+    note: >-
+      ECAI 2025, IOS Press, pp. 3583-3590. Introduces k-stability for matching
+      problems on acceptability graphs, proves K(N) <= ceil(N / 2) (Theorem 1)
+      and K(N) = Omega(sqrt(N)) (Theorem 3), and poses the tightness conjecture
+      in Section 5 ("Conclusion and Open Problems").
+  - title: "Formal Conjectures: ApproximatelyStableMatching.lean and Roommates.lean"
+    authors:
+      - "Bo Cowgill"
+    id: "https://github.com/google-deepmind/formal-conjectures/pull/7853"
+    type: "other"
+    location: "https://github.com/google-deepmind/formal-conjectures/blob/main/FormalConjectures/Paper/ApproximatelyStableMatching.lean"
+    relationship: "background"
+    note: >-
+      Formalized the Roommates model and the conjecture
+      FanelliMoscardelli.stability_threshold_tight (merged Nov 9, 2026;
+      tagged research open). Challenge.lean reproduces Roommates.lean verbatim
+      and states the exact negation not_stability_threshold_tight.
+
+related_formalizations:
+  - id: "https://github.com/google-deepmind/formal-conjectures/blob/main/FormalConjectures/Paper/ApproximatelyStableMatching.lean"
+    relationship: "builds-on"
+    note: >-
+      Challenge.lean copies the Roommates definitions from
+      FormalConjecturesForMathlib/Combinatorics/Roommates.lean verbatim, and
+      FanelliMoscardelli.not_stability_threshold_tight is the exact logical
+      negation of FanelliMoscardelli.stability_threshold_tight.
+
+status:
+  scope: >-
+    Completely proves exists_m_stable_of_odd, stabilityThreshold_odd_le,
+    not_stability_threshold_tight, stabilityThreshold_mono,
+    stabilityThreshold_five, stabilityThreshold_six, and
+    stabilityThreshold_seven with zero sorry and zero custom axioms. Note: the
+    disproof settles the conjecture for all odd N >= 7 (and hence refutes the
+    eventually-for-all-N statement formalized in Formal Conjectures); whether
+    K(2m) = m holds for even N >= 8 remains open.
+  sorry_count: 0
+  sorry_in_definitions: 0
+  axioms: ["propext", "Classical.choice", "Quot.sound"]
+
+automation:
+  methods:
+    - method: "agent"
+      models: ["Gemini (Google DeepMind)"]
+      framework: "Antigravity"
+      tool_setup: >-
+        AI-assisted mathematical proof discovery and Lean 4 formalization with
+        Mathlib, verified locally by lake build, lake env leanchecker, and
+        lake comparator.
+  notes: >-
+    The combinatorial proof of K(2m + 1) <= m, the 5-agent 2-blocking witness,
+    and the Lean 4 formalization were developed with AI assistance under human
+    direction and verified mechanically by the Lean 4 kernel and lake
+    comparator.
+
+fidelity:
+  divergences: >-
+    The Roommates model and definitions in Challenge.lean match
+    FormalConjecturesForMathlib/Combinatorics/Roommates.lean verbatim, and
+    not_stability_threshold_tight is the exact negation of
+    FormalConjectures/Paper/ApproximatelyStableMatching.lean's
+    stability_threshold_tight. As noted in Formal Conjectures issue #7848, the
+    source paper conjectures tightness "for larger values", which Formal
+    Conjectures interpreted as eventually-for-all-N; our proof refutes all odd
+    N >= 7 while leaving even N >= 8 open.
+
+review:
+  status: "self-assessed"
+  reviewers:
+    - "Samuel Burbulla"
+  notes: >-
+    Verified locally with lake build, lake env leanchecker, lake comparator,
+    and #print axioms (strictly [propext, Classical.choice, Quot.sound]).
+    Definitions diffed line-by-line against
+    FormalConjecturesForMathlib/Combinatorics/Roommates.lean. No external human
+    mathematician has refereed the proof yet.
+
+alignment:
+  namespace: "FanelliMoscardelli"
+  statements:
+    - source: "Constructive upper bound: every profile on 2m + 1 agents (m >= 3) admits an m-stable matching"
+      lean: "FanelliMoscardelli.exists_m_stable_of_odd"
+      module: "Solution"
+      status: "proved"
+    - source: "Threshold bound K(2m + 1) <= m for m >= 3"
+      lean: "FanelliMoscardelli.stabilityThreshold_odd_le"
+      module: "Solution"
+      status: "proved"
+    - source: "Negation of FanelliMoscardelli.stability_threshold_tight (FormalConjectures/Paper/ApproximatelyStableMatching.lean)"
+      lean: "FanelliMoscardelli.not_stability_threshold_tight"
+      module: "Solution"
+      status: "proved"
+    - source: "Monotonicity K(n) <= K(n + 1)"
+      lean: "FanelliMoscardelli.stabilityThreshold_mono"
+      module: "Solution"
+      status: "proved"
+    - source: "Exact threshold K(5) = 3"
+      lean: "FanelliMoscardelli.stabilityThreshold_five"
+      module: "Solution"
+      status: "proved"
+    - source: "Exact threshold K(6) = 3"
+      lean: "FanelliMoscardelli.stabilityThreshold_six"
+      module: "Solution"
+      status: "proved"
+    - source: "Exact threshold K(7) = 3 < 4 = ceil(7 / 2)"
+      lean: "FanelliMoscardelli.stabilityThreshold_seven"
+      module: "Solution"
+      status: "proved"
+
+acknowledgements: >-
+  Built with Lean 4 and Mathlib. Roommates definitions and conjecture statement
+  adapted from Google DeepMind's Formal Conjectures repository (Apache-2.0,
+  PR #7853 by Bo Cowgill), based on A. Fanelli and L. Moscardelli (ECAI 2025).
